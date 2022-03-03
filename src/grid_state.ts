@@ -177,21 +177,26 @@ function encode_links(grid_state: GridState): string {
     for(const y of range(1, zy)) {
         for(const x of range(1, zx)) {
             let value = 0;
+            let link_count = 0; // Tracks always generates clues as two links attached to a single cell, so we're looking for those too
 
             if(grid_state.statuses.get(make_link_id({ x, y }, Direction.North)) == Status.Live) {
                 value += 2;
+                ++link_count;
             }
             if(grid_state.statuses.get(make_link_id({ x, y }, Direction.East)) == Status.Live) {
                 value += 1;
+                ++link_count;
             }
             if(grid_state.statuses.get(make_link_id({ x, y }, Direction.South)) == Status.Live) {
                 value += 8;
+                ++link_count;
             }
             if(grid_state.statuses.get(make_link_id({ x, y }, Direction.West)) == Status.Live) {
                 value += 4;
+                ++link_count;
             }
 
-            if(value > 0) {
+            if(value > 0 && link_count == 2) {
                 if(skip > 0) {
                     code += String.fromCharCode(skip + 96);
                 }
@@ -219,19 +224,19 @@ function encode_links(grid_state: GridState): string {
 function encode_hints(grid_state: GridState) : string {
     let code = '';
 
-    for(const x of range(1, grid_state.grid.xmax + 2)) {
-        if(false) {
+    for(const x of range(1, grid_state.grid.xmax + 1)) {
+        code += ',';
+        if(grid_state.statuses.get(make_link_id({ x, y: grid_state.grid.ymax }, Direction.South)) == Status.Live) {
             code += "S";
         }
-        code += ',';
         code += String.fromCharCode(grid_state.grid.hints.get(make_hint_id(x, Orientation.South))!.value + 48);
     }
 
-    for(const y of range(1, grid_state.grid.ymax + 2)) {
-        if(false) {
+    for(const y of range(1, grid_state.grid.ymax + 1)) {
+        code += ',';
+        if(grid_state.statuses.get(make_link_id({ x: 0, y }, Direction.East)) == Status.Live) {
             code += "S";
         }
-        code += ',';
         code += String.fromCharCode(grid_state.grid.hints.get(make_hint_id(y, Orientation.East))!.value + 48);
     }
 

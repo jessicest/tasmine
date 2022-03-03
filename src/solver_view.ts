@@ -202,6 +202,11 @@ export class SolverView {
         const code = (document.getElementById('code') as HTMLInputElement).value;
         this.set_grid_state(parse_code(code));
     }
+
+    encode() {
+        this.auto_solve_stop();
+        console.log(this.view.grid_state.encode());
+    }
 }
 
 const canvas = document.getElementById('canvas');
