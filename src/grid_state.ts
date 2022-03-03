@@ -275,25 +275,22 @@ function parse_links(cx: number, input: string) : Array<LinkContent> {
 
             const x = i % cx;
             const y = (i - x) / cx;
+            const pos = { x: x + 1, y: y + 1 };
 
             if(n & 1) {
-                // East
-                link_contents.push({ pos: { x: x + 1, y: y + 1 }, orientation: Orientation.East });
+                link_contents.push({ pos, direction: Direction.East });
             }
 
             if(n & 2) {
-                // North
-                link_contents.push({ pos: { x: x + 1, y }, orientation: Orientation.South });
+                link_contents.push({ pos, direction: Direction.North });
             }
 
             if(n & 4) {
-                // West
-                link_contents.push({ pos: { x, y: y + 1 }, orientation: Orientation.East });
+                link_contents.push({ pos, direction: Direction.West });
             }
 
             if(n & 8) {
-                // South
-                link_contents.push({ pos: { x: x + 1, y: y + 1 }, orientation: Orientation.South });
+                link_contents.push({ pos, direction: Direction.South });
             }
 
             ++i;

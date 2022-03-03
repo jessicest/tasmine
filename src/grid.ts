@@ -25,12 +25,13 @@ export type Pos = {
     y: Index
 };
 
-export function direction_to_orientation(pos: Pos, direction: Direction): [Pos, Orientation] {
+function direction_to_orientation(pos: Pos, direction: Direction): [Pos, Orientation] {
     switch(direction) {
         case Direction.North: return [{ x: pos.x, y: pos.y - 1 }, Orientation.South];
         case Direction.East: return [pos, Orientation.East];
         case Direction.South: return [pos, Orientation.South];
         case Direction.West: return [{ x: pos.x - 1, y: pos.y }, Orientation.East];
+        default: throw 'hey what? direction_to_orientation(' + pos + ', ' + direction + ')';
     }
 }
 

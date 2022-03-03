@@ -22,3 +22,12 @@ it('should do nothing', () => {
 
     expect(true).toEqual(false);
 });
+
+it('should generate matching codes for various puzzles', () => {
+    const codes = ['8x8:n9a5a3g5a9k3i5hCd,7,8,8,S7,6,4,5,2,8,7,S5,6,7,5,5,4'];
+
+    for(const code of codes) {
+        const new_code = parse_code(code).encode();
+        expect(new_code).toEqual(code);
+    }
+});
