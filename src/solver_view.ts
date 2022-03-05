@@ -24,6 +24,10 @@ import {
     View
 } from './view';
 
+import {
+    AutoStepper
+} from './auto_stepper';
+
 declare global {
   interface Window {
     view: SolverView;
@@ -33,11 +37,11 @@ declare global {
 export class SolverView {
     view!: View;
     rule_reducer!: RuleReducer;
-    paused: boolean;
+    auto_stepper!: AutoStepper;
 
     constructor(canvas: any) {
         this.view = new View(canvas);
-        this.paused = true;
+        this.auto_stepper = new AutoStepper(this.solve_step.bind(this));
 
         canvas.addEventListener('click', (event: any) => {
             this.click(true, this.event_pos(event));
@@ -153,58 +157,14 @@ export class SolverView {
         }
     }
 
-    auto_solve_step() {
-        let next_frame_time = 0;
-
-        function step(this: SolverView, timestamp: DOMHighResTimeStamp) {
-            if(this.paused) {
-                return;
-            }
-            if(timestamp >= next_frame_time) {
-                const solve_rate = parseInt((document.getElementById('solve_rate') as HTMLInputElement).value);
-                next_frame_time = timestamp + (1000 / 60);
-
-                for(let i = 0; i < solve_rate; ++i) {
-                    if(performance.now() >= next_frame_time) {
-                        break;
-                    }
-                    if(!this.solve_step(true)) {
-                        this.auto_solve_stop();
-                        next_frame_time = 0;
-                        return false;
-                    }
-                }
-            }
-            window.requestAnimationFrame(step.bind(this));
-        }
-
-        window.requestAnimationFrame(step.bind(this));
-    }
-
-    auto_solve_start() {
-        this.paused = false;
-        const button = document.getElementById('auto') as HTMLButtonElement;
-        button.innerHTML = 'stop';
-        button.onclick = this.auto_solve_stop.bind(this);
-
-        this.auto_solve_step();
-    }
-
-    auto_solve_stop() {
-        this.paused = true;
-        const button = document.getElementById('auto') as HTMLButtonElement;
-        button.innerHTML = 'start';
-        button.onclick = this.auto_solve_start.bind(this);
-    }
-
     parse() {
-        this.auto_solve_stop();
+        this.auto_stepper.auto_step_stop();
         const code = (document.getElementById('code') as HTMLInputElement).value;
         this.set_grid_state(parse_code(code));
     }
 
     encode() {
-        this.auto_solve_stop();
+        this.auto_stepper.auto_step_stop();
         console.log(this.view.grid_state.encode());
     }
 }
