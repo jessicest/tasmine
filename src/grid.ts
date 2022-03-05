@@ -130,7 +130,7 @@ export class Link {
     }
 }
 
-export class GridBuilder {
+class GridBuilder {
     grid: Grid;
 
     constructor(xmax: Index, ymax: Index) {
@@ -159,6 +159,14 @@ export class GridBuilder {
                     this.add_link(pos, Direction.South);
                 }
             }
+        }
+        
+        // add hints
+        for(const y of range(1, zy)) {
+            this.add_hint(y, Orientation.East);
+        }
+        for(const x of range(1, zx)) {
+            this.add_hint(x, Orientation.South);
         }
     }
 
@@ -216,8 +224,8 @@ export class GridBuilder {
         return link.node.id;
     }
 
-    add_hint(index: Index, orientation: Orientation, value: number): HintId {
-        const hint = new Hint(index, orientation, value);
+    add_hint(index: Index, orientation: Orientation): HintId {
+        const hint = new Hint(index, orientation, -1);
         if(this.grid.hints.has(hint.node.id)) {
             return hint.node.id;
         }
@@ -326,17 +334,17 @@ export function make_hints(hints_south: Array<number>, hints_east: Array<number>
     return hint_contents;
 }
 
-export function make_grid(cx: Index, cy: Index, live_links: Array<LinkContent>, hint_contents: Array<HintContent>): Grid {
+export function make_grid(cx: Index, cy: Index, permalinks: Array<LinkContent>, hint_contents: Array<HintContent>): Grid {
     const builder = new GridBuilder(cx, cy);
 
-    // add live links (this will add the offramps)
-    for(const link_content of live_links) {
+    // add live links (including the offramps)
+    for(const link_content of permalinks) {
         builder.add_permalink(link_content.pos, link_content.direction);
     }
 
-    // add hints
+    // assign hints
     for(const hint of hint_contents) {
-        builder.add_hint(hint.index, hint.orientation, hint.value);
+        builder.grid.hints.get(make_hint_id(hint.index, hint.orientation))!.value = hint.value;
     }
 
     return builder.build();
