@@ -1,8 +1,8 @@
 {
-  "name": "tracks",
+  "name": "tasmine",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/tracks.js",
+  "main": "lib/tasmine.js",
   "type": "module",
   "dependencies": {
     "@testdeck/mocha": "^0.2.0",
@@ -33,14 +33,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jessicest/tracks.git"
+    "url": "git+https://github.com/jessicest/tasmine.git"
   },
   "author": "Jessica Knight",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jessicest/tracks/issues"
+    "url": "https://github.com/jessicest/tasmine/issues"
   },
-  "homepage": "https://github.com/jessicest/tracks#readme",
+  "homepage": "https://github.com/jessicest/tasmine#readme",
   "jest": {
     "modulePaths": [
         "<rootDir>/src/"
