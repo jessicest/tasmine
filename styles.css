@@ -16,9 +16,6 @@ body {
     justify-content: center;
     width: 600px;
     margin: 10px;
-    #padding: 20px;
-	#padding-top: 20px;
-	#padding-top: 20px;
     border-radius: 20px;
     background-color: #ddeeff;
     position: relative;
@@ -37,8 +34,6 @@ body {
 	box-sizing: border-box;
 	flex-direction: row;
 	position: relative;
-	#padding: 20px;
-	#margin: 20px;
 }
 
 .task {
@@ -66,32 +61,25 @@ body {
 
 .drop-target {
 	width: 100%;
-	background-color: rgba(255, 0, 0, 0.44);
-	#pointer-events: none;
+    background-color: transparent;
 }
 
 .drop-target.day-top {
-	top: 0;
 	height: 20px;
-	background-color: rgba(0, 255, 0, 0.22);
 }
 
 .drop-target.day-bottom {
-	bottom: 0;
 	height: 20px;
-	background-color: rgba(0, 0, 255, 0.44);
 }
 
 .drop-target.task-top {
 	position: absolute;
 	top: 0;
 	height: calc(50%);
-	background-color: rgba(0, 0, 0, 0.22);
 }
 
 .drop-target.task-bottom {
 	position: absolute;
 	bottom: 0;
 	height: calc(50%);
-	background-color: rgba(0, 0, 255, 0.44);
 }
