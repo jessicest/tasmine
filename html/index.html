@@ -2,19 +2,29 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <script src='../lib/solver_view.js' type='module'></script>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+		<script src="script.js" defer></script>
     </head>
     <body>
-        <p>
-            <input id='code' />
-            <button onclick='window.view.parse.call(window.view)'>parse</button>
-            <button onclick='window.view.encode.call(window.view)'>encode</button>
-            <button onclick='window.view.solve_step.call(window.view, true)'>step</button>
-            <input type="range" min="0" max="10" value="1" class="slider" id="auto_step_rate" />
-            <button id='auto' onclick='window.view.auto_stepper.auto_step_start.call(window.view.auto_stepper)'>solve</button>
-        </p>
-        <div id='view' width='100%' height='100%'>
-            <canvas width='100%' height='100%' id='canvas' style='outline: thick solid;'></canvas>
-        </p>
+		<div class="container">
+			<div class="day" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+				<p class="overlapping-text">Text Overlapping</p>
+				<div id="task1" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 1</div>
+				<div id="task2" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 2</div>
+				<div id="task3" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 3</div>
+			</div>
+			<div class="day" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+				<p class="overlapping-text">Text Overlapping</p>
+				<div id="task4" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 4</div>
+				<div id="task5" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 5</div>
+				<div id="task6" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 6</div>
+			</div>
+			<div class="day" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+				<p class="overlapping-text">Text Overlapping</p>
+				<div id="task7" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 7</div>
+				<div id="task8" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 8</div>
+				<div id="task9" class="task" draggable="true" ondragstart="dragStart(event)">Bubble 9</div>
+			</div>
+		</div>
     </body>
 </html>
