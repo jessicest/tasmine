@@ -62,7 +62,14 @@ body {
 .drop-target {
 	width: 100%;
     background-color: transparent;
+    z-index: 4000;
 }
+
+/*
+.drop-target.highlight::before {
+    content: "-->";
+}
+*/
 
 .drop-target.day-top {
 	height: 20px;

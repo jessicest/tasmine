@@ -1,30 +1,32 @@
 function dragOver(event) {
     event.preventDefault();
-    event.target.parentNode.classList.add("highlight");
+    var slot = event.currentTarget;
+    var day = slot.closest('.day');
+    slot.classList.add('highlight');
+    day.classList.add('highlight');
 }
 
 function dragLeave(event) {
     event.preventDefault();
-    event.target.parentNode.classList.remove("highlight");
+    var slot = event.currentTarget;
+    var day = slot.closest('.day');
+    slot.classList.remove('highlight');
+    day.classList.remove('highlight');
 }
 
 function dragStart(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
+    event.dataTransfer.setData('text/plain', event.target.id);
 }
 
 function drop(event) {
     event.preventDefault();
     var slot = event.currentTarget;
     var box = slot.parentNode;
-    var day;
-    if (box.classList.contains('day')) {
-        day = box;
-    } else {
-        day = box.parentNode;
-    }
-    day.classList.remove("highlight");
+    var day = slot.closest('.day');
+    slot.classList.remove('highlight');
+    day.classList.remove('highlight');
 
-    var task = document.getElementById(event.dataTransfer.getData("text/plain"));
+    var task = document.getElementById(event.dataTransfer.getData('text/plain'));
     if (slot.classList.contains('day-top')) {
         day.insertBefore(task, slot.nextSibling);
     } else if (slot.classList.contains('day-bottom')) {
