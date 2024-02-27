@@ -3,7 +3,7 @@ body {
     font-family: Tahoma, Roboto, Arial, sans-serif;
 }
 
-.container {
+.days {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,9 +14,11 @@ body {
 .day {
     align-items: center;
     justify-content: center;
-    width: 200px;
+    width: 600px;
     margin: 10px;
-    padding: 20px;
+    #padding: 20px;
+	#padding-top: 20px;
+	#padding-top: 20px;
     border-radius: 20px;
     background-color: #ddeeff;
     position: relative;
@@ -29,23 +31,67 @@ body {
 	background-color: #ddffdd;
 }
 
-.task {
-	margin-top: 10px;
-	width: 80%;
-    padding: 20px;
+.task-box {
+	background-color: transparent;
+	width: 100%;
+	box-sizing: border-box;
 	flex-direction: row;
-	border-radius: 10px;
-	background-color: #eeeedd;
 	position: relative;
-	border: 2px solid #ffddaa;
+	#padding: 20px;
+	#margin: 20px;
 }
 
-.overlapping-text {
+.task {
+	margin-top: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+	width: calc(100% - 40px);
+	box-sizing: border-box;
+    padding: 20px;
+	border-radius: 10px;
+	background-color: #eeeedd;
+	border: 2px solid #ffddaa;
+	position: relative;
+}
+
+.title {
     position: absolute;
-    top: -30px;
+    top: -10px;
     background-color: #f4fcff;
     z-index: 10;
     padding: 5px 10px;
     border-radius: 5px;
     border: 2px solid #aaeeff;
+}
+
+.drop-target {
+	width: 100%;
+	background-color: rgba(255, 0, 0, 0.44);
+	#pointer-events: none;
+}
+
+.drop-target.day-top {
+	top: 0;
+	height: 20px;
+	background-color: rgba(0, 255, 0, 0.22);
+}
+
+.drop-target.day-bottom {
+	bottom: 0;
+	height: 20px;
+	background-color: rgba(0, 0, 255, 0.44);
+}
+
+.drop-target.task-top {
+	position: absolute;
+	top: 0;
+	height: calc(50%);
+	background-color: rgba(0, 0, 0, 0.22);
+}
+
+.drop-target.task-bottom {
+	position: absolute;
+	bottom: 0;
+	height: calc(50%);
+	background-color: rgba(0, 0, 255, 0.44);
 }
