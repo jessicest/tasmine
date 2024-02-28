@@ -78,7 +78,7 @@ async function loadFromDatabase() {
     }
     // Flatten to string to display
     const output = range.values.reduce(
-        (str, row) => `${str}${row[0]}, ${row[4]}\n`,
+        (str, row, also) => `${str}${row[0]}, ${row[1]}, ${row[2]}\n`,
         'Name, Major:\n');
     document.getElementById('debug').innerText = output;
 }
