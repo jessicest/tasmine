@@ -1,16 +1,18 @@
 
+let taskData = [];
+
 function dragOver(event) {
     event.preventDefault();
-    var slot = event.currentTarget;
-    var day = slot.closest('.day');
+    const slot = event.currentTarget;
+    const day = slot.closest('.day');
     slot.classList.add('highlight');
     day.classList.add('highlight');
 }
 
 function dragLeave(event) {
     event.preventDefault();
-    var slot = event.currentTarget;
-    var day = slot.closest('.day');
+    const slot = event.currentTarget;
+    const day = slot.closest('.day');
     slot.classList.remove('highlight');
     day.classList.remove('highlight');
 }
@@ -26,13 +28,13 @@ function dragEnd(event) {
 
 function drop(event) {
     event.preventDefault();
-    var slot = event.currentTarget;
-    var box = slot.parentNode;
-    var day = slot.closest('.day');
+    const slot = event.currentTarget;
+    const box = slot.parentNode;
+    const day = slot.closest('.day');
     slot.classList.remove('highlight');
     day.classList.remove('highlight');
 
-    var task = document.getElementById(event.dataTransfer.getData('text/plain'));
+    const task = document.getElementById(event.dataTransfer.getData('text/plain'));
     if (slot.classList.contains('day-top')) {
         day.insertBefore(task, slot.nextSibling);
     } else if (slot.classList.contains('day-bottom')) {
@@ -45,7 +47,7 @@ function drop(event) {
 }
 
 function makeSlot(className) {
-    var slot = document.createElement('div');
+    const slot = document.createElement('div');
     slot.classList.add('drop-target');
     slot.classList.add(className);
     slot.addEventListener('dragover', dragOver);
@@ -55,13 +57,13 @@ function makeSlot(className) {
 }
 
 function makeTask(dateString, i, j) {
-    var taskBox = document.createElement('div');
+    const taskBox = document.createElement('div');
     taskBox.classList.add('task-box');
     taskBox.id = 'task ' + dateString + ' ' + j;
     taskBox.setAttribute('draggable', true);
     taskBox.addEventListener('dragstart', dragStart);
 
-    var task = document.createElement('div');
+    const task = document.createElement('div');
     task.classList.add('task');
     task.innerHTML = '<p>task ' + i + ' ' + j + '<input type="checkbox" /></p>';
 
@@ -72,11 +74,11 @@ function makeTask(dateString, i, j) {
 }
 
 function createDay(dayId, titleId, titleText, tasks) {
-    var day = document.createElement('div');
+    const day = document.createElement('div');
     day.id = dayId;
     day.classList.add('day');
 
-    var dayTitle = document.createElement('div');
+    const dayTitle = document.createElement('div');
     dayTitle.id = titleId;
     dayTitle.innerText = titleText;
     dayTitle.classList.add('title');
@@ -89,20 +91,60 @@ function createDay(dayId, titleId, titleText, tasks) {
 }
 
 function init() {
-    var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
     document.body.addEventListener('dragend', dragEnd);
 
-    var days = document.getElementById('days');
+    if (window.location.hostname === 'localhost') {
+        initSampleData();
+    } else {
+        return initDatabase()
+            .then(() => loadFromDatabase())
+            .then(rows => rebuild(rows))
+            .catch(error => document.getElementById('debug').innerText = error);
+    }
+}
 
+function rebuild(rows) {
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    const dateStrings = rows.map(row => row[0]).filter(s => s !== 'Today').sort();
+
+    const days = document.getElementById('days');
+    days.innerHTML = '';
+    days.appendChild(createDay(
+        'today',
+        'title today',
+        'Today',
+        rows.filter(row => row[0] === 'Today').map(row => (row[1], row[2]))));
+
+    dateStrings.forEach(dateString => {
+        const date = new Date(dateString);
+        const day = createDay(
+            'day ' + dateString,
+            'title ' + dateString,
+            daysOfWeek[date.getDay()] + ' ' + date.getDate(),
+            rows.filter(row => row[0] === dateString).map(row => (row[1], row[2])));
+
+        day.dataset.date = dateString;
+        day.dataset.year = date.getFullYear();
+        day.dataset.month = date.getMonth() + 1;
+        day.dataset.day = date.getDate();
+        day.dataset.weekday = date.getDay();
+        days.appendChild(day);
+    });
+}
+
+function initSampleData() {
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    const days = document.getElementById('days');
     days.appendChild(createDay('today', 'title today', 'Today', []));
 
-    for (var i = 1; i < 5; ++i) {
-        var date = new Date();
+    for (let i = 1; i < 5; ++i) {
+        const date = new Date();
         date.setDate(date.getDate() + i);
-        var dateString = date.toISOString();
+        const dateString = date.toISOString();
 
-        var day = createDay(
+        const day = createDay(
             'day ' + dateString,
             'title ' + dateString,
             daysOfWeek[date.getDay()] + ' ' + date.getDate(),
@@ -119,8 +161,8 @@ function init() {
 }
 
 function pad(character, targetLength, string) {
-    var s = '';
-    for(var i = 0; i < targetLength - string.length; ++i) {
+    const s = '';
+    for(let i = 0; i < targetLength - string.length; ++i) {
         s += character;
     }
     return s + string;
