@@ -70,37 +70,48 @@ function makeTask(dateString, i, j) {
     return taskBox;
 }
 
+function createDay(dayId, titleId, titleText, tasks) {
+    var day = document.createElement('div');
+    day.id = dayId;
+    day.classList.add('day');
+
+    var dayTitle = document.createElement('div');
+    dayTitle.id = titleId;
+    dayTitle.innerText = titleText;
+    dayTitle.classList.add('title');
+    day.appendChild(dayTitle);
+    day.appendChild(makeSlot('day-top'));
+    tasks.forEach(task => day.appendChild(task));
+    day.appendChild(makeSlot('day-bottom'));
+
+    return day;
+}
+
 function init() {
     var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     document.body.addEventListener('dragend', dragEnd);
 
     var days = document.getElementById('days');
+
+    days.appendChild(createDay('today', 'title today', 'Today', []));
+
     for (var i = 1; i < 5; ++i) {
         var date = new Date();
         date.setDate(date.getDate() + i);
         var dateString = date.toISOString();
 
-        var day = document.createElement('div');
-        day.id = 'day ' + dateString;
+        var day = createDay(
+            'day ' + dateString,
+            'title ' + dateString,
+            daysOfWeek[date.getDay()] + ' ' + date.getDate(),
+            [0, 1, 2].map(j => makeTask(dateString, i, j)));
+
         day.dataset.date = dateString;
         day.dataset.year = date.getFullYear();
         day.dataset.month = date.getMonth() + 1;
         day.dataset.day = date.getDate();
         day.dataset.weekday = date.getDay();
-        day.classList.add('day');
-
-        var title = document.createElement('div');
-        title.id = 'title ' + dateString;
-        title.innerText = daysOfWeek[date.getDay()] + ' ' + date.getDate();
-        title.classList.add('title');
-        day.appendChild(title);
-        day.appendChild(makeSlot('day-top'));
-
-        for (var j = 0; j < 3; ++j) {
-            day.appendChild(makeTask(dateString, i, j));
-        }
-        day.appendChild(makeSlot('day-bottom'));
 
         days.appendChild(day);
     }
