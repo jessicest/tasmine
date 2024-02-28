@@ -1,3 +1,4 @@
+
 function dragOver(event) {
     event.preventDefault();
     var slot = event.currentTarget;
