@@ -1,0 +1,3 @@
+[submodule "dragdroptouch"]
+	path = dragdroptouch
+	url = git@github.com:Bernardo-Castilho/dragdroptouch.git
