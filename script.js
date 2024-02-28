@@ -92,8 +92,11 @@ function createDay(dayId, titleId, titleText, tasks) {
 
 function init() {
     document.body.addEventListener('dragend', dragEnd);
+    const urlParams = new URLSearchParams(window.location.search);
 
-    if (window.location.hostname === 'localhost') {
+    console.log(urlParams.get('sample'));
+
+    if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
         initSampleData();
     } else {
         return initDatabase()
