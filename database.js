@@ -7,15 +7,20 @@ const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
 let tokenClient;
 
 async function initDatabase() {
+    console.log('a1');
     await Promise.all([gapi.load('client', initializeGapiClient), gisLoaded()]);
+    console.log('a2');
     await login();
+    console.log('a3');
 }
 
 async function initializeGapiClient() {
+    console.log('a4');
     await gapi.client.init({
         apiKey: API_KEY,
         discoveryDocs: [DISCOVERY_DOC],
     });
+    console.log('a5');
 }
 
 function gisLoaded() {
@@ -36,6 +41,7 @@ function login() {
             }
         };
 
+        console.log('a6');
         if (gapi.client.getToken() === null) {
             // Prompt the user to select a Google Account and ask for consent to share their data
             // when establishing a new session.
@@ -44,10 +50,12 @@ function login() {
             // Skip display of account chooser and consent dialog for an existing session.
             tokenClient.requestAccessToken({prompt: ''});
         }
+        console.log('a7');
     });
 }
 
 async function loadFromDatabase() {
+    console.log('a8');
     return gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
         range: 'data!A1:C',
