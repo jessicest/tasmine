@@ -8,7 +8,14 @@ let tokenClient;
 
 async function initDatabase() {
     console.log('a1');
-    await Promise.all([gapi.load('client', initializeGapiClient), gisLoaded()]);
+    gapi.load('client', initializeGapiClient);
+    console.log('a1a');
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: '', // defined later
+    });
+
     console.log('a2');
     await login();
     console.log('a3');
@@ -24,11 +31,6 @@ async function initializeGapiClient() {
 }
 
 function gisLoaded() {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: '', // defined later
-    });
 }
 
 function login() {
