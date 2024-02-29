@@ -102,7 +102,9 @@ async function init() {
         if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
             rebuildSample();
         } else {
-            const rows = await initDatabase();
+            await initDatabase();
+            await login();
+            const rows = await loadFromDatabase();
             rebuild(rows);
         }
     }
