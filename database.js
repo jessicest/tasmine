@@ -66,7 +66,7 @@ async function loadFromDatabase() {
     console.log('a8');
     let response;
     try {
-        response = gapi.client.sheets.spreadsheets.values.get({
+        response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
             range: 'data!A1:C',
         });
