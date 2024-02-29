@@ -7,14 +7,17 @@ const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
 let tokenClient;
 
 async function initDatabase() {
-    console.log('a1');
-    gapi.load('client', initializeGapiClient);
-    console.log('a1a');
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: '', // defined later
+    console.log('b1');
+    await new Promise((resolve, reject) => {
+        gapi.load("client", {callback: resolve, onerror: reject});
     });
+
+    console.log('b2');
+    await gapi.client.init({
+        apiKey: API_KEY,
+        discoveryDocs: [DISCOVERY_DOC],
+    });
+    console.log('b3');
 
     console.log('a2');
     await login();
@@ -30,10 +33,13 @@ async function initializeGapiClient() {
     console.log('a5');
 }
 
-function gisLoaded() {
-}
-
 function login() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: '', // defined later
+    });
+
     return new Promise((resolve, reject) => {
         tokenClient.callback = (response) => {
             if (response.error === undefined) {

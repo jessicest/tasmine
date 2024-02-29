@@ -94,8 +94,6 @@ function init() {
     document.body.addEventListener('dragend', dragEnd);
     const urlParams = new URLSearchParams(window.location.search);
 
-    console.log(urlParams.get('sample'));
-
     if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
         initSampleData();
     } else {
