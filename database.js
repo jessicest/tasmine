@@ -64,9 +64,9 @@ function login() {
 
 async function loadFromDatabase() {
     console.log('a8');
-    let range;
+    let response;
     try {
-        range = gapi.client.sheets.spreadsheets.values.get({
+        response = gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
             range: 'data!A1:C',
         });
@@ -74,8 +74,7 @@ async function loadFromDatabase() {
         throw error.message;
     }
 
-    console.log(range);
-    console.log(range.values);
+    const range = response.result;
 
     if (range && range.values && range.values.length > 0) {
         return range.values;
