@@ -64,17 +64,20 @@ function login() {
 
 async function loadFromDatabase() {
     console.log('a8');
-    return gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
-        range: 'data!A1:C',
-    }).catch((error) => Promise.reject(error.message))
-    .then((response) => {
-        const range = response.result;
-        if (range && range.values && range.values.length > 0) {
-            return range.values;
-        } else {
-            return Promise.reject('no values found tho');
-        }
-    });
+    let range;
+    try {
+        range = gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
+            range: 'data!A1:C',
+        });
+    } catch(error) {
+        throw error.message;
+    }
+
+    if (range && range.values && range.values.length > 0) {
+        return range.values;
+    } else {
+        throw 'no values found tho';
+    }
 }
 
