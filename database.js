@@ -28,6 +28,7 @@ function login() {
     tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: SCOPES,
+        login_hint: 'corence@gmail.com',
         callback: '', // defined later
     });
 
