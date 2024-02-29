@@ -156,6 +156,8 @@ function rebuildSample() {
         });
     }).flat();
 
+    console.log(rows);
+
     rebuild(rows);
 }
 
