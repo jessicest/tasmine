@@ -68,7 +68,7 @@ async function loadFromDatabase() {
     try {
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
-            range: 'data!A1:C',
+            range: 'data!A1:D',
         });
     } catch(error) {
         throw error.message;

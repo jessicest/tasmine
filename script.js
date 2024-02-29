@@ -56,16 +56,20 @@ function makeSlot(className) {
     return slot;
 }
 
-function makeTask(dateString, i, j) {
+function makeTask(row) {
+    const id = row[0];
+    const name = row[2];
+    const checked = (row[3] === true || row[3] === 'TRUE') ? 'CHECKED ' : '';
+
     const taskBox = document.createElement('div');
     taskBox.classList.add('task-box');
-    taskBox.id = 'task ' + dateString + ' ' + j;
+    taskBox.id = `task ${id}`;
     taskBox.setAttribute('draggable', true);
     taskBox.addEventListener('dragstart', dragStart);
 
     const task = document.createElement('div');
     task.classList.add('task');
-    task.innerHTML = '<p>task ' + i + ' ' + j + '<input type="checkbox" /></p>';
+    task.innerHTML = `${name}<input type="checkbox" ${checked}/>`;
 
     taskBox.appendChild(task);
     taskBox.appendChild(makeSlot('task-top'));
@@ -84,7 +88,7 @@ function createDay(dayId, titleId, titleText, tasks) {
     dayTitle.classList.add('title');
     day.appendChild(dayTitle);
     day.appendChild(makeSlot('day-top'));
-    tasks.forEach(task => day.appendChild(task));
+    tasks.forEach(task => day.appendChild(makeTask(task)));
     day.appendChild(makeSlot('day-bottom'));
 
     return day;
@@ -96,10 +100,10 @@ async function init() {
         const urlParams = new URLSearchParams(window.location.search);
 
         if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
-            initSampleData();
+            rebuildSample();
         } else {
             const rows = await initDatabase();
-            await rebuild(rows);
+            rebuild(rows);
         }
     }
     catch (error) {
@@ -111,7 +115,7 @@ async function init() {
 function rebuild(rows) {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    const dateStrings = rows.map(row => row[0]).filter(s => s !== 'Today').sort();
+    const dateStrings = rows.map(row => row[1]).filter(s => s !== 'Today').sort();
 
     const days = document.getElementById('days');
     days.innerHTML = '';
@@ -119,15 +123,15 @@ function rebuild(rows) {
         'today',
         'title today',
         'Today',
-        rows.filter(row => row[0] === 'Today').map(row => (row[1], row[2]))));
+        rows.filter(row => row[1] === 'Today')));
 
     dateStrings.forEach(dateString => {
         const date = new Date(dateString);
         const day = createDay(
-            'day ' + dateString,
-            'title ' + dateString,
-            daysOfWeek[date.getDay()] + ' ' + date.getDate(),
-            rows.filter(row => row[0] === dateString).map(row => (row[1], row[2])));
+            `day ${dateString}`,
+            `title ${dateString}`,
+            `${daysOfWeek[date.getDay()]} ${date.getDate()}`,
+            rows.filter(row => row[1] === dateString));
 
         day.dataset.date = dateString;
         day.dataset.year = date.getFullYear();
@@ -138,31 +142,19 @@ function rebuild(rows) {
     });
 }
 
-function initSampleData() {
-    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+function rebuildSample() {
+    const rows = [1, 2, 3, 4, 5].map(i => {
+        return [0, 1, 2].map(j => {
+            const date = new Date();
+            date.setDate(date.getDate() + i);
+            const dateString = date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const name = `task ${i} ${j}`;
 
-    const days = document.getElementById('days');
-    days.appendChild(createDay('today', 'title today', 'Today', []));
+            return [name, dateString, name, false];
+        });
+    }).flat();
 
-    for (let i = 1; i < 5; ++i) {
-        const date = new Date();
-        date.setDate(date.getDate() + i);
-        const dateString = date.toISOString();
-
-        const day = createDay(
-            'day ' + dateString,
-            'title ' + dateString,
-            daysOfWeek[date.getDay()] + ' ' + date.getDate(),
-            [0, 1, 2].map(j => makeTask(dateString, i, j)));
-
-        day.dataset.date = dateString;
-        day.dataset.year = date.getFullYear();
-        day.dataset.month = date.getMonth() + 1;
-        day.dataset.day = date.getDate();
-        day.dataset.weekday = date.getDay();
-
-        days.appendChild(day);
-    }
+    rebuild(rows);
 }
 
 Promise.all([init()]);
