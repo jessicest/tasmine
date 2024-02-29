@@ -149,7 +149,7 @@ function rebuildSample() {
         return [0, 1, 2].map(j => {
             const date = new Date();
             date.setDate(date.getDate() + i);
-            const dateString = date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const dateString = date.toLocaleDateString('en-AU', { year: 'numeric', month: '2-digit', day: '2-digit' });
             const name = `task ${i} ${j}`;
 
             return [name, dateString, name, false];
