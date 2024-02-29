@@ -40,14 +40,17 @@ function login() {
             }
         };
 
+        tokenClient.requestAccessToken();
+        /*
         if (gapi.client.getToken() === null) {
             // Prompt the user to select a Google Account and ask for consent to share their data
             // when establishing a new session.
-            tokenClient.requestAccessToken({prompt: 'consent'});
+            tokenClient.requestAccessToken();
         } else {
             // Skip display of account chooser and consent dialog for an existing session.
             tokenClient.requestAccessToken({prompt: ''});
         }
+        */
     });
 }
 
