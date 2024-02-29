@@ -56,7 +56,7 @@ async function loadFromDatabase() {
     try {
         response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1xvaR8InzlsIUnwK7_eZ0OQySN6vgb57oUR3tO3pZZJU',
-            range: 'data!A1:D',
+            range: 'data!A2:D',
         });
     } catch(error) {
         throw error.message;
@@ -65,6 +65,7 @@ async function loadFromDatabase() {
     const range = response.result;
 
     if (range && range.values && range.values.length > 0) {
+        console.log(range);
         return range.values;
     } else {
         throw 'no values found tho';

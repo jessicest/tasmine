@@ -115,6 +115,8 @@ async function init() {
 }
 
 function rebuild(rows) {
+    console.log(rows);
+
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     const dateStrings = rows.map(row => row[1]).filter(s => s !== 'Today').sort();
@@ -155,8 +157,6 @@ function rebuildSample() {
             return [name, dateString, name, false];
         });
     }).flat();
-
-    console.log(rows);
 
     rebuild(rows);
 }
