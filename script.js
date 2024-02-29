@@ -90,17 +90,21 @@ function createDay(dayId, titleId, titleText, tasks) {
     return day;
 }
 
-function init() {
-    document.body.addEventListener('dragend', dragEnd);
-    const urlParams = new URLSearchParams(window.location.search);
+async function init() {
+    try {
+        document.body.addEventListener('dragend', dragEnd);
+        const urlParams = new URLSearchParams(window.location.search);
 
-    if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
-        initSampleData();
-    } else {
-        return initDatabase()
-            .then(() => loadFromDatabase())
-            .then(rows => rebuild(rows))
-            .catch(error => document.getElementById('debug').innerText = error);
+        if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
+            initSampleData();
+        } else {
+            const rows = await initDatabase();
+            await rebuild(rows);
+        }
+    }
+    catch (error) {
+        document.getElementById('debug').innerText = error;
+        throw error;
     }
 }
 
@@ -161,12 +165,4 @@ function initSampleData() {
     }
 }
 
-function pad(character, targetLength, string) {
-    const s = '';
-    for(let i = 0; i < targetLength - string.length; ++i) {
-        s += character;
-    }
-    return s + string;
-}
-
-init();
+Promise.all([init()]);
