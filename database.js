@@ -74,6 +74,9 @@ async function loadFromDatabase() {
         throw error.message;
     }
 
+    console.log(range);
+    console.log(range.values);
+
     if (range && range.values && range.values.length > 0) {
         return range.values;
     } else {
