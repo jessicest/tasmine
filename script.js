@@ -119,7 +119,11 @@ function rebuild(rows) {
 
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    const dateStrings = rows.map(row => row[1]).filter(s => s !== 'Today').sort();
+    const dateStrings = rows
+        .map(row => row[1])
+        .filter(s => s !== 'Today')
+        .filter((x, i, a) => a.indexOf(x) == i)
+        .sort();
 
     const days = document.getElementById('days');
     days.innerHTML = '';
@@ -146,12 +150,20 @@ function rebuild(rows) {
     });
 }
 
+function dateToYyyyMmDd(date) {
+    return [
+      date.getFullYear(),
+      ('0' + (date.getMonth() + 1)).slice(-2),
+      ('0' + date.getDate()).slice(-2)
+    ].join('-');
+}
+
 function rebuildSample() {
     const rows = [1, 2, 3, 4, 5].map(i => {
         return [0, 1, 2].map(j => {
             const date = new Date();
             date.setDate(date.getDate() + i);
-            const dateString = date.toLocaleDateString('en-AU', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const dateString = dateToYyyyMmDd(date);
             const name = `task ${i} ${j}`;
 
             return [name, dateString, name, false];
