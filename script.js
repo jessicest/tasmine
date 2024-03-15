@@ -99,7 +99,7 @@ async function init() {
         document.body.addEventListener('dragend', dragEnd);
         const urlParams = new URLSearchParams(window.location.search);
 
-        if (window.location.hostname === 'localhost' || urlParams.get('sample') != null) {
+        if (/*window.location.hostname === 'localhost' || */urlParams.get('sample') != null) {
             rebuildSample();
         } else {
             await initDatabase();
