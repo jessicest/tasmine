@@ -7,7 +7,7 @@ async function initDatabase() {
 
 async function login() {
     try {
-        const response = await fetch(`https://tasmine.com/login`, {
+        const response = await fetch(`/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ async function login() {
 
 async function loadFromDatabase() {
     try {
-        const response = await fetch(`https://tasmine.com/dump`, {
+        const response = await fetch(`/dump`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
