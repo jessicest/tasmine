@@ -1,4 +1,13 @@
 #!/bin/bash
-rm -f /srv/http/tasmine_server/*
-cp -R /srv/git/tasmine_server/tasmine_server/* /srv/http/tasmine_server/
+
+sudo /srv/kill_node
+
+rsync --recursive --delete /srv/git/tasmine/tasmine /srv/http/tasmine
+rsync --recursive --delete /srv/git/tasmine/tasmine_server /srv/http/tasmine_server
+
+cd /srv/http/tasmine_server
+npm install
+
 chown -R tasmine_install:tasmine /srv/http/tasmine_server
+
+sudo -bu tasmine_serve nodejs index.js
