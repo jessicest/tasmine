@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -f /srv/http/tasmine_server/*
+cp -R /srv/git/tasmine_server/tasmine_server/* /srv/http/tasmine_server/
+chown -R tasmine_install:tasmine /srv/http/tasmine_server
