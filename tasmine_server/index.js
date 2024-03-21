@@ -33,8 +33,8 @@ app.use(express.static('../tasmine'));
 
 // Create a PostgreSQL pool
 const pool = new Pool({
-  user: 'tasmine',
-  host: 'localhost',
+  user: 'tasmine_serve',
+  host: '/var/run/postgresql',
   database: 'tasmine',
   port: 5432,
 });
