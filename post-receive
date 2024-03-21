@@ -10,4 +10,4 @@ npm install
 
 chown -R tasmine_install:tasmine /srv/http/tasmine_server
 
-sudo -bu tasmine_serve nodejs index.js
+sudo -bu tasmine_serve nodejs index.js &
