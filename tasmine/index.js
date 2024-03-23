@@ -29,7 +29,7 @@ async function try_login(ip, info, passport) {
 
 const app = express();
 app.use(express.json());
-app.use(express.static('../tasmine'));
+app.use(express.static('html'));
 
 // Create a PostgreSQL pool
 const pool = new Pool({

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#if [[ -n $(git status --porcelain) ]]; then
+  #echo "Error: There are uncommitted changes in the working directory."
+  #exit 1
+#fi
+
+if [[ -z $(git status --porcelain) ]]; then
+    #rsync --recursive --delete --exclude='node_modules' tasmine tasmine_install@droplet:/srv/http &&
+    rsync --recursive --delete --exclude='node_modules' tasmine tasmine_install@droplet:/srv/http &&
+
+    ssh tasmine_install@droplet 'npm --prefix /srv/http/tasmine install && chown -R tasmine_install:tasmine /srv/http/tasmine' &&
+    ssh tasmine_serve@droplet 'cd /srv/http/tasmine && nohup nodejs index.js &'
+else
+    git status --porcelain
+fi
+
+#sudo -bu tasmine_serve nodejs index.js
+
+
+#rsync -avz -e "ssh -i /path/to/ssh_key" /local/folder user@remote_host:/remote/folder
+
+#ssh tasmine_install@host 'sudo -u tasmine_serve "pkill nodejs && nodejs /srv/http/tasmine_server/index.js"' 
+
