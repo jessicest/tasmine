@@ -9,8 +9,7 @@ if [[ -z $(git status --porcelain) ]]; then
     #rsync --recursive --delete --exclude='node_modules' tasmine tasmine_install@droplet:/srv/http &&
     rsync --recursive --delete --exclude='node_modules' tasmine tasmine_install@droplet:/srv/http &&
 
-    ssh tasmine_install@droplet 'npm --prefix /srv/http/tasmine install && chown -R tasmine_install:tasmine /srv/http/tasmine' &&
-    ssh tasmine_serve@droplet 'cd /srv/http/tasmine && nohup nodejs index.js &'
+    ssh tasmine_install@droplet 'npm --prefix /srv/http/tasmine install && chown -R tasmine_install:tasmine /srv/http/tasmine && cd /srv/http/tasmine && sudo -u tasmine_serve nohup nodejs index.js &'
 else
     git status --porcelain
 fi
